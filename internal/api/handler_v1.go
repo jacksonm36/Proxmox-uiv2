@@ -260,6 +260,6 @@ func (s *Server) PVEPower(w http.ResponseWriter, r *http.Request) {
 		s.json(w, 502, map[string]any{"error": err.Error()})
 		return
 	}
-	_ = repo.InsertAudit(s.Pool, r.Context(), oid, UserID(r.Context()), "pve.power", "qemu", fmt.Sprintf("%s/%d", body.Node, body.VMID))
+	_ = repo.InsertAudit(r.Context(), s.Pool, oid, UserID(r.Context()), "pve.power", "qemu", fmt.Sprintf("%s/%d", body.Node, body.VMID))
 	s.json(w, 200, map[string]any{"ok": true})
 }

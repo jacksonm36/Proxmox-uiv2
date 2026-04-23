@@ -7,7 +7,7 @@ License:        ASL 2.0
 URL:            https://example.com/cloudmanager
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:   golang >= 1.22
+BuildRequires:   golang >= 1.23
 BuildRequires:  systemd-rpm-macros
 Requires:       postgresql
 Requires:       systemd

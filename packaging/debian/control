@@ -2,7 +2,7 @@ Source: cloudmanager
 Section: admin
 Priority: optional
 Maintainer: Your Team <ops@example.com>
-Build-Depends: debhelper (>= 12), golang-go (>= 1.22), nodejs (>= 18)
+Build-Depends: debhelper (>= 12), golang-go (>= 1.23), nodejs (>= 18)
 Standards-Version: 4.6.0
 
 Package: cloudmanager

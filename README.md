@@ -17,7 +17,7 @@ Then load `.env` and start `dist/cloudmanager-api`, `dist/cloudmanager-worker`, 
 
 If you do not use the install script, continue below.
 
-From the repository root, you can also run `go mod tidy` once to generate `go.sum` (requires Go 1.22+).
+From the repository root, you can also run `go mod tidy` once to generate `go.sum` (requires Go 1.23+).
 
 ### 1. PostgreSQL (native install)
 

@@ -10,7 +10,7 @@ The script runs [`scripts/init-db.sql`](scripts/init-db.sql) and `createdb` on L
 ## Requirements
 
 - PostgreSQL 15+ (native install recommended; see below)
-- Go 1.22+ (to build from source) or prebuilt binaries from your pipeline
+- Go 1.23+ (to build from source) or prebuilt binaries from your pipeline
 - Node 20+ (only to build the web UI)
 - `terraform` CLI on the worker host (version pinned per workspace in the database; install a matching default in `/usr/bin/terraform` or on `PATH`)
 
