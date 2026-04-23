@@ -11,6 +11,8 @@ import (
 
 type Config struct {
 	HTTPAddr       string        `yaml:"http_addr"`
+	// ManagedEnvFile is the resolved path (CM_MANAGED_ENV or Workdir/managed.env). Not in YAML; set by Load.
+	ManagedEnvFile string        `yaml:"-"`
 	DatabaseURL    string        `yaml:"database_url"`
 	RedisAddr      string        `yaml:"redis_addr"`
 	SessionSecret  string        `yaml:"session_secret"`
@@ -47,6 +49,11 @@ func Load(path string) (*Config, error) {
 		}
 	}
 	applyEnv(c)
+	c.ManagedEnvFile = ResolveManagedEnvFile(c)
+	if c.ManagedEnvFile != "" {
+		_ = ApplyManagedEnvFile(c.ManagedEnvFile) //nolint:errcheck
+		applyEnv(c)                               // re-read struct after file overrides
+	}
 	if c.DatabaseURL == "" {
 		return nil, fmt.Errorf("database_url required (env CM_DATABASE_URL)")
 	}

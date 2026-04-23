@@ -20,21 +20,21 @@ CREATE OR REPLACE FUNCTION app_is_platform()
 RETURNS boolean
 LANGUAGE sql STABLE
 AS $$
-  SELECT coalesce(nullif(current_setting('app.is_platform_admin', true), ''), 'false')::boolean;
+  SELECT coalesce(nullif(current_setting('app.is_platform_admin', true), ''), 'false')::boolean
 $$;
 
 CREATE OR REPLACE FUNCTION app_current_org()
 RETURNS uuid
 LANGUAGE sql STABLE
 AS $$
-  SELECT nullif(nullif(current_setting('app.org_id', true), ''), 'null')::uuid;
+  SELECT nullif(nullif(current_setting('app.org_id', true), ''), 'null')::uuid
 $$;
 
 CREATE OR REPLACE FUNCTION app_org_role()
 RETURNS text
 LANGUAGE sql STABLE
 AS $$
-  SELECT coalesce(nullif(current_setting('app.org_role', true), ''), 'org_member');
+  SELECT coalesce(nullif(current_setting('app.org_role', true), ''), 'org_member')
 $$;
 
 -- orgs: members see their org; platform sees all

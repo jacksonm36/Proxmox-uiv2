@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -78,8 +79,12 @@ func main() {
 	r.Group(func(r chi.Router) {
 		r.Use(mw.Auth)
 		r.Get("/api/v1/auth/me", srv.Me)
+		r.Get("/api/v1/admin/env", srv.GetAdminEnv)
+		r.Post("/api/v1/admin/env", srv.PatchAdminEnv)
 		r.Get("/api/v1/pve/vms", srv.PVEVMs)
+		r.Get("/api/v1/pve/connection", srv.GetPVEConnection)
 		r.Post("/api/v1/pve/connection", srv.PostPVEConnection)
+		r.Post("/api/v1/pve/console", srv.PostPVEConsole)
 		r.Post("/api/v1/pve/power", srv.PVEPower)
 		r.Get("/api/v1/templates", srv.ListTemplates)
 		r.Post("/api/v1/templates", srv.PostTemplate)
@@ -133,7 +138,28 @@ func main() {
 	_ = s.Shutdown(context.Background())
 }
 
+// hasFile returns whether p names a file under root (defends against ".." in URL paths for SPA fallback).
 func hasFile(root, p string) bool {
-	_, e := os.Stat(root + string(os.PathSeparator) + p)
+	if p == "" {
+		return false
+	}
+	clean := filepath.Clean(p)
+	if clean == ".." || strings.HasPrefix(clean, ".."+string(os.PathSeparator)) {
+		return false
+	}
+	full := filepath.Join(root, clean)
+	rootAbs, err := filepath.Abs(root)
+	if err != nil {
+		return false
+	}
+	fullAbs, err := filepath.Abs(full)
+	if err != nil {
+		return false
+	}
+	sep := string(os.PathSeparator)
+	if !strings.HasPrefix(fullAbs+sep, rootAbs+sep) && fullAbs != rootAbs {
+		return false
+	}
+	_, e := os.Stat(fullAbs)
 	return e == nil
 }
