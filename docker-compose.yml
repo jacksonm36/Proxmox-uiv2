@@ -1,0 +1,21 @@
+# Optional: only if you do not use a natively installed PostgreSQL.
+# See docs/INSTALL.md — "Native PostgreSQL" for local setup without Docker.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cloudmanager
+      POSTGRES_PASSWORD: cloudmanager
+      POSTGRES_DB: cloudmanager
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata: {}

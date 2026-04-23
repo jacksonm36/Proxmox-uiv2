@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Thin wrapper so you can run ./install from the repository root (Git Bash / Linux / macOS).
+cd "$(dirname "$0")" || exit 1
+exec ./scripts/install.sh "$@"

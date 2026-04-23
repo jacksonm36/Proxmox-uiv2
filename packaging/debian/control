@@ -1,0 +1,14 @@
+Source: cloudmanager
+Section: admin
+Priority: optional
+Maintainer: Your Team <ops@example.com>
+Build-Depends: debhelper (>= 12), golang-go (>= 1.22), nodejs (>= 18)
+Standards-Version: 4.6.0
+
+Package: cloudmanager
+Architecture: any
+Depends: postgresql, adduser, systemd, ${misc:Depends}, ${shlibs:Depends}
+Description: Proxmox control plane (API, worker, web UI)
+ Horizon-style multi-tenant console with Terraform job execution.
+ The package build script in debian/rules compiles the Go binaries
+ and copies systemd units from deploy/.

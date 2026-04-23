@@ -1,0 +1,24 @@
+[Unit]
+Description=Cloudmanager API (Proxmox control plane)
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=cloudmanager
+Group=cloudmanager
+EnvironmentFile=-/etc/cloudmanager/environment
+ExecStart=/usr/bin/cloudmanager-api
+Restart=on-failure
+RestartSec=4
+# Hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/cloudmanager
+AmbientCapabilities=
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

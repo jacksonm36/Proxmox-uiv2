@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+%:
+	dh $@
+
+override_dh_auto_build:
+	# From packaging/debian: go up to source root
+	(cd ../.. && go build -trimpath -ldflags "-s -w" -o cloudmanager-api ./cmd/api)
+	(cd ../.. && go build -trimpath -ldflags "-s -w" -o cloudmanager-worker ./cmd/worker)
+	(cd ../../apps/web && (command -v npm >/dev/null && npm install && npm run build) || true)
+
+override_dh_auto_install:
+	install -D -m755 ../../cloudmanager-api $$(pwd)/debian/cloudmanager/usr/bin/cloudmanager-api
+	install -D -m755 ../../cloudmanager-worker $$(pwd)/debian/cloudmanager/usr/bin/cloudmanager-worker
+	install -d $$(pwd)/debian/cloudmanager/usr/share/cloudmanager/web
+	-cp -r ../../apps/web/dist/* $$(pwd)/debian/cloudmanager/usr/share/cloudmanager/web/ 2>/dev/null || true
+	install -D -m644 ../../deploy/systemd/cloudmanager-api.service $$(pwd)/debian/cloudmanager/lib/systemd/system/cloudmanager-api.service
+	install -D -m644 ../../deploy/systemd/cloudmanager-worker.service $$(pwd)/debian/cloudmanager/lib/systemd/system/cloudmanager-worker.service
+	install -D -m644 ../../deploy/systemd/cloudmanager.tmpfiles.conf $$(pwd)/debian/cloudmanager/usr/lib/tmpfiles.d/cloudmanager.conf

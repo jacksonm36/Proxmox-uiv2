@@ -1,0 +1,22 @@
+[Unit]
+Description=Cloudmanager worker (Terraform / jobs)
+After=cloudmanager-api.service
+Requires=cloudmanager-api.service
+
+[Service]
+Type=simple
+User=cloudmanager
+Group=cloudmanager-terraform
+EnvironmentFile=-/etc/cloudmanager/environment
+ExecStart=/usr/bin/cloudmanager-worker
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/cloudmanager
+# Terraform runs in tmp under workdir; restrict further with systemd drop-ins on production hosts
+RestrictAddressFamily=AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
